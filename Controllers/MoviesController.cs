@@ -20,7 +20,7 @@ namespace MvcMovie.Controllers
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index(string movieGenre, string searchString)
+        public async Task<IActionResult> Index(string movieGenre, string searchString, string sortOrder)
         {
             if (_context.Movie == null)
             {
@@ -31,6 +31,7 @@ namespace MvcMovie.Controllers
             IQueryable<string> genreQuery = from m in _context.Movie
                                             orderby m.Genre
                                             select m.Genre;
+
             var movies = from m in _context.Movie
                          select m;
 
@@ -42,6 +43,20 @@ namespace MvcMovie.Controllers
             if (!string.IsNullOrEmpty(movieGenre))
             {
                 movies = movies.Where(x => x.Genre == movieGenre);
+            }
+
+            // Sort the movies based on the selected sort order
+            switch (sortOrder)
+            {
+                case "date_desc":
+                    movies = movies.OrderByDescending(m => m.ReleaseDate);
+                    break;
+                case "date_asc":
+                    movies = movies.OrderBy(m => m.ReleaseDate);
+                    break;
+                default:
+                    movies = movies.OrderBy(m => m.ReleaseDate); // Default to ascending order
+                    break;
             }
 
             var movieGenreVM = new MovieGenreViewModel
@@ -74,15 +89,19 @@ namespace MvcMovie.Controllers
         // GET: Movies/Create
         public IActionResult Create()
         {
+            // Define a list of custom genres
+            var genres = new List<string> { "Action", "Comedy", "Drama", "Horror", "Sci-Fi", "Romance" };
+
+            // Pass the genres list to ViewBag
+            ViewBag.Genres = genres;
+
             return View();
         }
 
         // POST: Movies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -90,9 +109,15 @@ namespace MvcMovie.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            // Repopulate the genres in case of validation errors
+            var genres = new List<string> { "Action", "Comedy", "Drama", "Horror", "Sci-Fi", "Romance" };
+            ViewBag.Genres = genres;
+
             return View(movie);
         }
 
+        // GET: Movies/Edit/5
         // GET: Movies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -106,15 +131,20 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
+
+            // Define a list of genres
+            var genres = new List<string> { "Action", "Comedy", "Drama", "Horror", "Sci-Fi", "Romance" };
+
+            // Pass the genres list to ViewBag
+            ViewBag.Genres = genres;
+
             return View(movie);
         }
 
         // POST: Movies/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
         {
             if (id != movie.Id)
             {

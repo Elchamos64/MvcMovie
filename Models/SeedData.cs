@@ -26,6 +26,7 @@ public static class SeedData
                     ReleaseDate = DateTime.Parse("2003-1-31"),
                     Genre = "Comedy",
                     Price = 7.99M,
+                    Rating = "PG",
                     Image = "~/images/the-rm.jpg"
                 },
                 new Movie
@@ -34,6 +35,7 @@ public static class SeedData
                     ReleaseDate = DateTime.Parse("2001-12-14"),
                     Genre = "Adventure",
                     Price = 8.99M,
+                    Rating = "PG",
                     Image = "~/images/the-other-side-of-heaven.jpg"
                 },
                 new Movie
@@ -42,6 +44,7 @@ public static class SeedData
                     ReleaseDate = DateTime.Parse("2019-7-24"),
                     Genre = "Comedy",
                     Price = 9.99M,
+                    Rating = "PG",
                     Image = "~/images/the-fighting-preacher.jpg"
                 },
                 new Movie
@@ -50,6 +53,7 @@ public static class SeedData
                     ReleaseDate = DateTime.Parse("2014-10-10"),
                     Genre = "Documentary",
                     Price = 3.99M,
+                    Rating = "PG",
                     Image = "~/images/meet-the-mormons.jpg"
                 }
             );

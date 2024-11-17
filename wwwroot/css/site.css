@@ -27,7 +27,30 @@ td, th {
     color: white;
 }
 
-.bg-white {
-    background-color: #2b2738;
+
+main a {
     color: white;
+    text-decoration: none;
+    background-color: #9b89c4;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+    main a:hover {
+        color: #6e54b5;
+        background-color: white;
+    }
+
+td a {
+    padding: 5px;
+}
+
+.form-group {
+    padding-bottom: 20px;
+}
+
+.home-page {
+    margin:0 auto;
+    width: 600px;
+    text-align: center; 
 }
